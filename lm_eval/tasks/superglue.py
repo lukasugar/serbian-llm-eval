@@ -42,6 +42,8 @@ class BoolQ(Task):
         self._language = language
         if language == "Serbian":
             self.DATASET_PATH = "gordicaleksa/serbian-llm-eval-v1"
+        elif language == "Serbian-Cyrillic":
+            self.DATASET_PATH = "alkibijad/serbian-llm-eval-v1-cyrillic"
         elif language == "Slovenian":
             self.DATASET_PATH = "gordicaleksa/slovenian-llm-eval-v0"
         super().__init__(**kwargs)
@@ -61,11 +63,13 @@ class BoolQ(Task):
         return self._training_docs
 
     def validation_docs(self):
-        return self.dataset["test"] if self._language in ["Serbian", "Slovenian"] else self.dataset["validation"]
+        return self.dataset["test"] if self._language in ["Serbian", "Serbian-Cyrillic", "Slovenian"] else self.dataset["validation"]
 
     def doc_to_text(self, doc):
         if self._language == "Serbian":
             return f"{doc['passage']}\nPitanje: {doc['question']}?\nOdgovor:"
+        elif self._language == "Serbian-Cyrillic":
+            return f"{doc['passage']}\nПитање: {doc['question']}?\nОдговор:"
         elif self._language == "Slovenian":
             return f"{doc['passage']}\nVprašanje: {doc['question']}?\nOdgovor:"
         else:
@@ -85,6 +89,9 @@ class BoolQ(Task):
         if self._language == "Serbian":
             yes = " da"
             no = " ne"
+        elif self._language == "Serbian-Cyrillic":
+            yes = " да"
+            no = " не"
         elif self._language == "Slovenian":
             yes = " ja"
             no = " ne"

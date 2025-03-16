@@ -37,6 +37,9 @@ class PiQA(MultipleChoiceTask):
         if language == "Serbian":
             self.DATASET_PATH = "gordicaleksa/serbian-llm-eval-v1"
             self.DATASET_NAME = "piqa"
+        elif language == "Serbian-Cyrillic":
+            self.DATASET_PATH = "alkibijad/serbian-llm-eval-v1-cyrillic"
+            self.DATASET_NAME = "piqa"
         elif language == "Slovenian":
             self.DATASET_PATH = "gordicaleksa/slovenian-llm-eval-v0"
             self.DATASET_NAME = "piqa"
@@ -57,10 +60,10 @@ class PiQA(MultipleChoiceTask):
         return self._training_docs
 
     def validation_docs(self):
-        return map(self._process_doc, self.dataset["test"] if self._language in ["Serbian", "Slovenian"] else self.dataset["validation"])
+        return map(self._process_doc, self.dataset["test"] if self._language in ["Serbian", "Serbian-Cyrillic", "Slovenian"] else self.dataset["validation"])
 
     def _process_doc(self, doc):
-        if self._language in ["Serbian", "Slovenian"]:
+        if self._language in ["Serbian", "Serbian-Cyrillic", "Slovenian"]:
             return {
                 "goal": doc["goal"],
                 "choices": doc["choices"],
@@ -77,6 +80,8 @@ class PiQA(MultipleChoiceTask):
     def doc_to_text(self, doc):
         if self._language == "Serbian":
             return "Pitanje: " + doc["goal"] + "\nOdgovor:"
+        elif self._language == "Serbian-Cyrillic":
+            return "Питање: " + doc["goal"] + "\nОдговор:"
         elif self._language == "Slovenian":
             return "Vprašanje: " + doc["goal"] + "\nOdgovor:"
         else:

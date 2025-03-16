@@ -38,6 +38,9 @@ class TriviaQA(Task):
         if language == "Serbian":
             self.DATASET_PATH = "gordicaleksa/serbian-llm-eval-v1"
             self.DATASET_NAME = "triviaqa"
+        elif language == "Serbian-Cyrillic":
+            self.DATASET_PATH = "alkibijad/serbian-llm-eval-v1-cyrillic"
+            self.DATASET_NAME = "triviaqa"
         elif language == "Slovenian":
             self.DATASET_PATH = "gordicaleksa/slovenian-llm-eval-v0"
             self.DATASET_NAME = "triviaqa"
@@ -56,7 +59,7 @@ class TriviaQA(Task):
         return self.dataset["train"]
 
     def validation_docs(self):
-        return self.dataset["test"] if self._language in ["Serbian", "Slovenian"] else self.dataset["validation"]
+        return self.dataset["test"] if self._language in ["Serbian", "Serbian-Cyrillic", "Slovenian"] else self.dataset["validation"]
 
     def test_docs(self):
         raise NotImplementedError()
@@ -64,6 +67,8 @@ class TriviaQA(Task):
     def doc_to_text(self, doc):
         if self._language == "Serbian":
             return f"Pitanje: {doc['question']}\nOdgovor:"
+        elif self._language == "Serbian-Cyrillic":
+            return f"Питање: {doc['question']}\nОдговор:"
         elif self._language == "Slovenian":
             return f"Vprašanje: {doc['question']}\nOdgovor:"
         else:
