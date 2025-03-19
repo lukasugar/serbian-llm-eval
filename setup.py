@@ -38,13 +38,15 @@ setuptools.setup(
         "sacrebleu==1.5.0",
         "scikit-learn>=0.24.1",
         "sqlitedict",
-        "torch>=1.7",
+        # "torch>=1.7",
+        # "torch>=2.2.0+cu121",
         "tqdm-multiprocess",
         "transformers>=4.1",
         "zstandard",
         "accelerate>=0.17.1",
         "wandb", # for logging to wandb
         "python-dotenv", # for loading environment variables
+        "ipykernel",
     ],
     extras_require={
         "dev": ["black", "flake8", "pre-commit", "pytest", "pytest-cov"],
