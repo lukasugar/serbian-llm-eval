@@ -9,3 +9,6 @@ lm_cache
 .env
 serbian_eval/
 wandb/
+
+.venv/
+results/

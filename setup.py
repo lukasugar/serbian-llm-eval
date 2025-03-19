@@ -23,7 +23,7 @@ setuptools.setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        "datasets>=2.0.0",
+        "datasets>=2.0.0,<=2.21.0",
         "einops",
         "importlib-resources",
         "jsonlines",
