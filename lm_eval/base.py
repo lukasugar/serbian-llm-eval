@@ -540,12 +540,15 @@ class Task(abc.ABC):
             - `datasets.DownloadMode.FORCE_REDOWNLOAD`
                 Fresh download and fresh dataset.
         """
+        _trust_remote_code = os.environ.get("TRUST_REMOTE_CODE", "false").lower() == "true"
+        print(f"TRUST_REMOTE_CODE: {_trust_remote_code}")
         self.dataset = datasets.load_dataset(
             path=self.DATASET_PATH,
             name=self.DATASET_NAME,
             data_dir=data_dir,
             cache_dir=cache_dir,
             download_mode=download_mode,
+            trust_remote_code=_trust_remote_code,
         )
 
     def should_decontaminate(self):

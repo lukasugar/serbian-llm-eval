@@ -9,7 +9,6 @@ import yaml
 from typing import Dict, List, Any, Union, Optional
 import itertools
 
-from lm_eval import tasks, evaluator, utils
 
 logging.getLogger("openai").setLevel(logging.WARNING)
 
@@ -142,6 +141,7 @@ def build_command(run_config: Dict[str, Any], main_script: str = "main.py") -> L
         "no_cache": "--no_cache",
         "check_integrity": "--check_integrity",
         "write_out": "--write_out",
+        "log_to_wandb": "--log_to_wandb",
     }
     
     # Add parameters to command if they exist in the config
@@ -196,11 +196,14 @@ def main():
             print(f"\nConfiguration {i+1}/{len(runs)} completed successfully")
         except subprocess.CalledProcessError as e:
             print(f"\nError running configuration {i+1}/{len(runs)}: {e}")
-            if i < len(runs) - 1:
-                user_input = input("Continue with next configuration? (y/n): ")
-                if user_input.lower() != 'y':
-                    break
-    
+            # if i < len(runs) - 1:
+            #     user_input = input("Continue with next configuration? (y/n): ")
+            #     if user_input.lower() != 'y':
+            #         break
+
+            with open("failed_runs.txt", "a", encoding="utf-8") as f:
+                f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Configuration {i+1}/{len(runs)} failed: {e}\n")
+                
     print("\nAll configurations completed")
 
 
