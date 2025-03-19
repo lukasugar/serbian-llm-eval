@@ -150,7 +150,7 @@ def log_results_to_wandb(results, args):
     
     # Initialize wandb if it's not already initialized
     if wandb.run is None:
-        wandb.init(project=wandb_project, name=f"{model_args}-{language}-{args.tasks}")
+        wandb.init(project=wandb_project, name=f"{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}-{model_args}-{language}-{args.tasks}")
     
     # First, check if there are write_out_info files to log individual examples
     if args.write_out and args.output_base_path:
