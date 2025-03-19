@@ -150,8 +150,21 @@ def log_results_to_wandb(results, args):
     
     # Initialize wandb if it's not already initialized
     if wandb.run is None:
-        wandb.init(project=wandb_project, name=f"{model_args}-{language}-{args.tasks}")
-    
+    # Initialize wandb with project name, run name, and config parameters
+        wandb.init(
+            project=wandb_project, 
+            name=f"{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}-{model_args}-{language}-{args.tasks}",
+            config={
+                "model": args.model,
+                "model_args": model_args,
+                "language": language,
+                "tasks": args.tasks,
+                "num_fewshot": args.num_fewshot,
+                "batch_size": args.batch_size,
+                "limit": args.limit,
+            }
+        )    
+        
     # First, check if there are write_out_info files to log individual examples
     if args.write_out and args.output_base_path:
         for task_name in results["results"].keys():
@@ -177,11 +190,11 @@ def log_results_to_wandb(results, args):
         stats_table_name = f"{task_name}_stats"
         
         # Determine columns - model_args plus all metrics
-        columns = ["model_args"] + list(task_results.keys()) + ["full_json"]
+        columns = ["model_args", "language"] + list(task_results.keys()) + ["full_json"]
         stats_table = wandb.Table(columns=columns)
         
         # Extract row data
-        row_data = [model_args]
+        row_data = [model_args, language]
         for metric in task_results.keys():
             row_data.append(task_results[metric])
         
