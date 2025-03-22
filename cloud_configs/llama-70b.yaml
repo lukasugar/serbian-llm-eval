@@ -1,0 +1,30 @@
+# Sample configuration file for serbian-llm-eval
+# This file defines multiple evaluation runs to be executed sequentially
+
+runs:
+  # Run the stuff that needs a single run
+  - model: "hf-causal-experimental"
+    model_args: ["pretrained=unsloth/Llama-3.3-70B-Instruct-bnb-4bit"]
+    language: ["Serbian-Cyrillic", "Serbian", "English"]
+    tasks: ["openbookqa", "boolq", "arc_challenge", "arc_easy", "hellaswag", "piqa", "winogrande"]
+    device: "cuda:0"
+    # device: "mps"  # Change to "cuda:0" for GPU or "cpu" for CPU
+    num_fewshot: 0
+    batch_size: 4
+    output_base_path: "./results/new_sample/"  # Will be auto-adjusted based on model_args, language, and tasks
+    write_out: true
+    log_to_wandb: true
+
+  # Run the stuff that needs multiple shots
+  - model: "hf-causal-experimental"
+    model_args: [ "pretrained=unsloth/Llama-3.3-70B-Instruct-bnb-4bit"]
+    language: ["Serbian-Cyrillic", "Serbian", "English"]
+    tasks: ["nq_open", "triviaqa"]
+    num_fewshot: 5
+    batch_size: 4
+    device: "cuda:0"
+    output_base_path: "./results/new_sample/"  # Will be auto-adjusted based on model_args, language, and tasks
+    write_out: true
+    log_to_wandb: true
+
+  
